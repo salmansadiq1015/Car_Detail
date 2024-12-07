@@ -284,7 +284,7 @@ export default function AddNewRecord() {
               </span>
               <input
                 type="number"
-                placeholder="Enter Car Price"
+                placeholder="Phone Number"
                 value={phone}
                 required
                 onChange={(e) => {
