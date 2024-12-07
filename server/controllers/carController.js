@@ -1,7 +1,7 @@
-import carSchema from "../models/carSchema.js";
 import userModel from "../models/userModel.js";
-// Create Car Models Data
+import carModels from "../models/carModel.js";
 
+// Create
 export const uploadCarModel = async (req, res) => {
   try {
     const { userId, carModel, price, phone, images, city } = req.body;
@@ -31,7 +31,7 @@ export const uploadCarModel = async (req, res) => {
       });
     }
 
-    const car = await carSchema.create({
+    const car = await carModels.create({
       user: userId,
       carModel,
       price,
@@ -54,16 +54,60 @@ export const uploadCarModel = async (req, res) => {
     });
   }
 };
+// Update Car Detail
+export const updateCarInfo = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    const { carModel, price, phone, images, city } = req.body;
+
+    const existingCar = await carModel.findById(carId);
+
+    if (!existingCar) {
+      return res.status(404).send({
+        success: false,
+        message: "Car not found!",
+      });
+    }
+
+    const updateCarInfo = await carModels.findByIdAndUpdate(
+      { _id: existingCar._id },
+      {
+        carModel,
+        price,
+        phone,
+        images,
+        city,
+      },
+      { new: true }
+    );
+
+    res.status(200).send({
+      success: true,
+      message: "Car info update successfully!",
+      carInfo: updateCarInfo,
+    });
+  } catch (error) {
+    console.error("Error in update car info:", error);
+    res.status(500).send({
+      success: false,
+      message: "Error in update car info!",
+      error,
+    });
+  }
+};
 
 // Get All Cars Models
 export const getAllCarModels = async (req, res) => {
   try {
-    const carModels = await carSchema.find({}).lean().exec();
+    const cars = await carModels
+      .find({})
+      .populate("user")
+      .sort({ createdAt: -1 });
 
     res.status(200).send({
       success: true,
       message: "All Car Models",
-      cars: carModels,
+      cars: cars,
     });
   } catch (error) {
     console.error("Error fetching car models:", error);
@@ -75,7 +119,7 @@ export const getAllCarModels = async (req, res) => {
   }
 };
 
-// Get All Cars Models
+// Get car detail
 export const getSingleCarModel = async (req, res) => {
   try {
     const id = req.params.id;
@@ -86,7 +130,7 @@ export const getSingleCarModel = async (req, res) => {
       });
     }
 
-    const car = await carSchema.findById(id).lean().exec();
+    const car = await carModels.findById(id).populate("user");
 
     if (!car) {
       return res.status(400).send({
@@ -110,7 +154,6 @@ export const getSingleCarModel = async (req, res) => {
 };
 
 // Delete Car Model
-
 export const deleteCarModel = async (req, res) => {
   const { id } = req.params;
 
@@ -122,7 +165,7 @@ export const deleteCarModel = async (req, res) => {
   }
 
   try {
-    const car = await carSchema.findById(id).lean().exec();
+    const car = await carModels.findById(id).lean().exec();
 
     if (!car) {
       return res.status(404).json({
@@ -131,7 +174,7 @@ export const deleteCarModel = async (req, res) => {
       });
     }
 
-    await carSchema.findByIdAndDelete(id);
+    await carModels.findByIdAndDelete(id);
 
     return res.status(200).json({
       success: true,

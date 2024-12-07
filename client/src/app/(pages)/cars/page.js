@@ -95,7 +95,7 @@ export default function Cars() {
         <div className="w-full flex items-center justify-end  mr-2 sm:mr-8">
           <button
             className="py-[.4rem] px-4 rounded-full text-[14px] cursor-pointer shadow-lg shadow-sky-500/30 hover:shadow-lg hover:shadow-sky-600/40 transition-all duration-300 flex items-center justify-center text-white bg-gradient-to-r from-sky-600 to-indigo-500 hover:from-sky-700 hover:to-indigo-600 transform hover:scale-105"
-            onClick={() => router.push("/create")}
+            onClick={() => router.push("/handleCar")}
           >
             <FiPlus className="h-4 w-4 text-white mr-1" />
             Add New
@@ -154,6 +154,7 @@ export default function Cars() {
               loading={loading}
               carDetail={carDetail}
               setIsDetails={setIsDetails}
+              getCarModels={getCarModels}
             />
           </div>
         </div>
