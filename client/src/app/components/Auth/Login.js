@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegEye } from "react-icons/fa";
@@ -15,7 +15,15 @@ export default function Login() {
   const route = useRouter();
   const [loading, setLoading] = useState(false);
   const { auth, setAuth } = useAuth();
+  
+  useEffect(() => {
+    if (auth?.token) {
+      redirect("/cars");
+    }
 
+    // eslint-disable-next-line
+  }, [auth]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
