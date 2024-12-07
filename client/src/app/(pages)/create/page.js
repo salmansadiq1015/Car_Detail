@@ -284,7 +284,7 @@ export default function AddNewRecord() {
               </span>
               <input
                 type="number"
-                placeholder="Enter Car Price"
+                placeholder="Phone number"
                 value={phone}
                 required
                 onChange={(e) => {
@@ -374,8 +374,10 @@ export default function AddNewRecord() {
           </div>
           <div className="flex items-center justify-end gap-5">
             <button
+              type="button"
               className={`w-[5rem] flex items-center justify-center gap-1 text-[14px] rounded-sm mt-4 h-[2rem] cursor-pointer shadow-md hover:shadow-gray-300  border-2 border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 outline-none hover:scale-105 transition-all duration-300
              `}
+             onClick={() => router.push("/cars")}
             >
               Cancel
             </button>
